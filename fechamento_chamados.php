@@ -450,7 +450,7 @@ Administrador:
 
 <div class="botoes">
 
-<a href="logout.php" class="btn btn-sair">
+<a href="logout.php?redirect=login_adm.php" class="btn btn-sair">
 Sair
 </a>
 
