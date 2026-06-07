@@ -4,6 +4,12 @@
 
 Este projeto é um sistema de Service Desk desenvolvido em PHP com suporte a usuários e administradores. Ele permite cadastro de usuários, login, abertura e acompanhamento de chamados, gerenciamento administrativo e um suporte via chatbot básico.
 
+## Descrição do Projeto
+
+- Nome do projeto: Help Desk TI
+- Problema: Falta de controle e organização no atendimento de chamados técnicos.
+- Solução: Sistema web para gerenciamento de chamados de TI.
+
 ## Objetivo
 
 Fornecer uma central de atendimento que permita:
