@@ -1,0 +1,27 @@
+# Sistema de arquivos e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Configurações locais
+.env
+.env.*
+
+# Logs
+*.log
+
+# Dependências e caches
+vendor/
+node_modules/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.suo
+*.user
+*.swp
+*.cache
+
+# Arquivos temporários
+*.tmp
+*.bak
