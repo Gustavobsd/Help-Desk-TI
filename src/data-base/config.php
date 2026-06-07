@@ -1,17 +1,21 @@
 <?php
 
-    $db_host = "localhost";
-    $db_user = "root";
-    $dbPassword = "59797552";  // Senha vazia por padrão no XAMPP
-    $dbName = "cadastro"; 
+// Dados do banco
+$host = "localhost";
+$usuario = "root";
+$senha = "59797552";
+$banco = "cadastro";
 
-    $conexao = new mysqli($db_host, $db_user, $dbPassword, $dbName);
-    //if ($conexao->connect_errno) {
-       // die("Falha na conexão: " . $conexao->connect_error);
-   // }
-   // else {
-       //echo "Conexão bem-sucedida, você pode realizar operações no banco de dados aqui";
-   // }
+// Criar conexão
+$conexao = new mysqli($host, $usuario, $senha, $banco);
 
+// Verificar conexão
+if($conexao->connect_error)
+{
+    die("Erro de conexão: " . $conexao->connect_error);
+}
+
+// Charset UTF8
+$conexao->set_charset("utf8mb4");
 
 ?>

@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿<?php
+session_start();
+
+if (!empty($_SESSION['usuario_id'])) {
+    header('Location: dashboard.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -87,6 +95,11 @@
     </style>
 </head>
 <body>
+  <?php if (isset($_GET['msg']) && $_GET['msg'] === 'login'): ?>
+    <div style="padding: 12px; margin: 20px auto 0; width: fit-content; border-radius: 10px; background: #1d4ed8; color: white; text-align: center;">
+      Faça login para acessar o dashboard.
+    </div>
+  <?php endif; ?>
   <div class="glas-container">
     <a href="home.php" class="a">← Voltar para Home</a>
     <h1>Login</h1>
@@ -107,8 +120,11 @@
       </label>
       <a href="#">Esqueci minha senha</a>
     </div>
-    <button class="button"> Entrar </button>
+    <button class="button" type="submit" name="submit"> Entrar </button>
     </form>
+    <div style="margin-top: 18px; text-align: center;">
+      <a href="login_adm.php" class="a">Área Administrativa</a>
+    </div>
   </div>
 </body>
 </html>

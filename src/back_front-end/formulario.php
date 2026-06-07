@@ -1,22 +1,49 @@
 ﻿<?php
 include_once('config.php');
 
-if (isset($_POST['submit'])) {
+$mensagem = '';
+$erro = '';
 
-    $nome = $_POST['nome'] ?? '';
-    $senha = $_POST['senha'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $telefone = $_POST['telefone'] ?? '';
-    $sexo = $_POST['genero'] ?? '';
-    $dataNascimento = $_POST['dataNascimento'] ?? '';
-    $cidade = $_POST['cidade'] ?? '';
-    $estado = $_POST['estado'] ?? '';
-    $endereco = $_POST['endereco'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $nome = trim($_POST['nome'] ?? '');
+    $senha = trim($_POST['senha'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $telefone = trim($_POST['telefone'] ?? '');
+    $genero = trim($_POST['genero'] ?? '');
+    $dataNascimento = trim($_POST['dataNascimento'] ?? '');
+    $cidade = trim($_POST['cidade'] ?? '');
+    $estado = trim($_POST['estado'] ?? '');
+    $endereco = trim($_POST['endereco'] ?? '');
 
-    $result = mysqli_query($conexao, "INSERT INTO usuarios(nome, senha, email, telefone, sexo, dataNascimento, cidade, estado, endereco) 
-    VALUES ('$nome', '$senha', '$email', '$telefone', '$sexo', '$dataNascimento', '$cidade', '$estado', '$endereco')");
+    if ($nome === '' || $email === '' || $senha === '') {
+        $erro = 'Por favor, preencha os campos obrigatórios.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erro = 'E-mail inválido.';
+    } elseif (strlen($senha) < 6) {
+        $erro = 'A senha deve possuir no mínimo 6 caracteres.';
+    } else {
+        $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO usuarios (nome, senha, email, telefone, genero, dataNascimento, cidade, estado, endereco) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conexao->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param('sssssssss', $nome, $senhaCriptografada, $email, $telefone, $genero, $dataNascimento, $cidade, $estado, $endereco);
+
+            if ($stmt->execute()) {
+                $stmt->close();
+                header('Location: home.php');
+                exit;
+            } else {
+                $erro = 'Erro ao cadastrar usuário: ' . $stmt->error;
+                $stmt->close();
+            }
+        } else {
+            $erro = 'Erro na preparação da consulta: ' . $conexao->error;
+        }
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -144,6 +171,16 @@ if (isset($_POST['submit'])) {
 <div class="content">
     <div class="box">
         <a href="home.php" class="a">← Voltar para Home</a>
+        <?php if ($mensagem): ?>
+            <div style="padding:12px;margin-bottom:16px;border-radius:10px;background:#0b513f;color:#dfffe6;">
+                <?php echo htmlspecialchars($mensagem); ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($erro): ?>
+            <div style="padding:12px;margin-bottom:16px;border-radius:10px;background:#7f1d1d;color:#ffe4e6;">
+                <?php echo htmlspecialchars($erro); ?>
+            </div>
+        <?php endif; ?>
         <form action="formulario.php" method="POST">
             <fieldset>
                 <legend><b>Novo Usuário</b></legend>
